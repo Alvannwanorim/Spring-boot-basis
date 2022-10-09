@@ -1,13 +1,16 @@
 package com.alvan.springbasis.student;
 
 import java.time.LocalDate;
+import java.time.Period;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.Transient;
 @Entity
 @Table
 public class Student {
@@ -25,29 +28,33 @@ public class Student {
     private String email;
     private LocalDate dob;
     private String name;
+    @Transient
     private Integer age;
-    public Student(long l, String string, String string2, LocalDate localDate, int i) {
+
+    public Student() {
     }
+
+    public Student(String email, 
+                    LocalDate dob, 
+                    String name
+                    ) {
+        this.email = email;
+        this.dob = dob;
+        this.name = name;
+        
+    }
+
     public Student(Long id, 
                     String email, 
                     LocalDate dob, 
-                    String name, 
-                    Integer age) {
+                    String name
+                    ) {
         this.id = id;
         this.email = email;
         this.dob = dob;
         this.name = name;
-        this.age = age;
     }
-    public Student(String email, 
-                    LocalDate dob, 
-                    String name, 
-                    Integer age) {
-        this.email = email;
-        this.dob = dob;
-        this.name = name;
-        this.age = age;
-    }
+    
     
     public Long getId() {
         return id;
@@ -74,7 +81,7 @@ public class Student {
         this.name = name;
     }
     public Integer getAge() {
-        return age;
+        return Period.between(this.dob, LocalDate.now()).getYears();
     }
     public void setAge(Integer age) {
         this.age = age;
